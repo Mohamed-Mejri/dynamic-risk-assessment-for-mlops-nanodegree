@@ -6,12 +6,6 @@ import numpy as np
 from datetime import datetime
 
 
-
-
-
-
-
-#############Function for data ingestion
 def merge_multiple_dataframe(input_path, output_path):
     """Takes input and output folders' paths. 
 
