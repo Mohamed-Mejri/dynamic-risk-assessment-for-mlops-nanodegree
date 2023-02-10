@@ -18,7 +18,7 @@ model_path = os.path.join(config['output_model_path'])
 
 
 #################Function for training the model
-def train_model():
+def train_model(dataset_csv_path=dataset_csv_path, model_path=model_path):
     
     #use this logistic regression for training
     lr = LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
@@ -28,9 +28,9 @@ def train_model():
                     warm_start=False)
     
     #fit the logistic regression to your data
-    for filename in os.listdir(config['output_folder_path']):
+    for filename in os.listdir(dataset_csv_path):
         if re.search('.csv$', filename):
-            X = pd.read_csv(os.path.join(config['output_folder_path'], filename))
+            X = pd.read_csv(os.path.join(dataset_csv_path, filename))
     y = list(X.pop('exited'))
     _ = X.pop('corporation')
     lr.fit(X,y)
