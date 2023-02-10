@@ -8,17 +8,11 @@ from datetime import datetime
 
 
 
-#############Load config.json and get input and output paths
-with open('config.json','r') as f:
-    config = json.load(f) 
-
-input_folder_path = config['input_folder_path']
-output_folder_path = config['output_folder_path']
 
 
 
 #############Function for data ingestion
-def merge_multiple_dataframe(input_path=input_folder_path, output_path=output_folder_path):
+def merge_multiple_dataframe(input_path, output_path):
     """Takes input and output folders' paths. 
 
     """
@@ -45,7 +39,13 @@ def merge_multiple_dataframe(input_path=input_folder_path, output_path=output_fo
 
 
 if __name__ == '__main__':
-    ingested_files = merge_multiple_dataframe()
+    with open('config.json','r') as f:
+        config = json.load(f) 
+
+    input_folder_path = config['input_folder_path']
+    output_folder_path = config['output_folder_path']
+    
+    ingested_files = merge_multiple_dataframe(input_folder_path, output_folder_path)
 
     if len(ingested_files):
         with open(os.path.join(output_folder_path, 'ingestedfiles.txt'), 'w') as f:
