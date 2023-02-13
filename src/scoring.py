@@ -17,9 +17,10 @@ with open('config.json','r') as f:
 model_path = os.path.join(config['output_model_path']) 
 test_data_path = os.path.join(config['test_data_path']) 
 
+test_data = os.path.join(test_data_path, 'testdata.csv')
 
 #################Function for model scoring
-def score_model(model_path=model_path, test_data_path=test_data_path):
+def score_model(model_path=model_path, test_data=test_data):
     #this function should take a trained model, load test data, and calculate an F1 score for the model relative to the test data
     #it should write the result to the latestscore.txt file
 
@@ -28,10 +29,7 @@ def score_model(model_path=model_path, test_data_path=test_data_path):
     model = pickle.load(open(path, 'rb'))
 
     # import test dataset
-    for filename in os.listdir(test_data_path):
-        if re.search('.csv$', filename):
-            X_test = pd.read_csv(os.path.join(test_data_path, filename))
-    
+    X_test = pd.read_csv(test_data)
     y_test = X_test.pop('exited')
     _ = X_test.pop('corporation')
 
