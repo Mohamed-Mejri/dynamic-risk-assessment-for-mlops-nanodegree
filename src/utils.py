@@ -9,7 +9,7 @@ import shutil
 
 def create_dir(path):
     try:
-        os.mkdir()
+        os.mkdir(path)
     except FileExistsError:
         pass
 
