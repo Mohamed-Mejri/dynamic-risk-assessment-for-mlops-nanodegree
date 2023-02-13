@@ -41,8 +41,10 @@ def score_model(model_path=model_path, test_data_path=test_data_path):
     score = metrics.f1_score(y_test, preds)
     with open(os.path.join(model_path, 'latestscore.txt'), 'w') as f:
         f.write(str(score))
-
+    return score
 
 
 if __name__ == '__main__':
-    score_model()
+    score = score_model()
+    print(score)
+    
