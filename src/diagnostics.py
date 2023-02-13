@@ -56,6 +56,8 @@ def dataframe_missing_data(data_path=dataset_csv_path):
 ##################Function to get timings
 def execution_time(tmp_dir=TIMING_OUTPUT):
     #calculate timing of training.py and ingestion.py
+    create_dir(tmp_dir)
+    
     starttime_ingestion = timeit.default_timer()
     merge_multiple_dataframe(config['input_folder_path'], tmp_dir)
     ingestion_timing = timeit.default_timer() - starttime_ingestion
@@ -64,6 +66,7 @@ def execution_time(tmp_dir=TIMING_OUTPUT):
     train_model(dataset_csv_path, tmp_dir)
     training_timing = timeit.default_timer() - starttime_training
 
+    remove_all_files(TIMING_OUTPUT)
     return ingestion_timing, training_timing
 
 ##################Function to check dependencies
@@ -79,11 +82,9 @@ def outdated_packages_list():
 
 
 if __name__ == '__main__':
-    create_dir(TIMING_OUTPUT)
     preds = model_predictions()
     summary = dataframe_summary()
     missing_data = dataframe_missing_data()
     ingestion_timing, training_timing = execution_time()
     outdated_pkg = outdated_packages_list()
-    remove_all_files(TIMING_OUTPUT)
     print(f"preds = {preds} \n summary = {summary} \n missing_data = {missing_data} \n ingestion_timing = {ingestion_timing} \n training_timing = {training_timing} \n outdated_pkg = {outdated_pkg}")
