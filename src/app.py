@@ -2,12 +2,10 @@ from flask import Flask, session, jsonify, request
 import pandas as pd
 import numpy as np
 import pickle
-import create_prediction_model
-import diagnosis 
-import predict_exited_from_saved_model
+import diagnostics 
 import json
 import os
-
+from scoring import score_model
 
 
 ######################Set up variables for use in our script
@@ -26,25 +24,31 @@ prediction_model = None
 @app.route("/prediction", methods=['POST','OPTIONS'])
 def predict():        
     #call the prediction function you created in Step 3
-    return #add return value for prediction outputs
+    data = request.args.get('data')
+    preds = diagnostics.model_predictions(data)
+    return str(preds)
 
 #######################Scoring Endpoint
 @app.route("/scoring", methods=['GET','OPTIONS'])
 def stats():        
-    #check the score of the deployed model
-    return #add return value (a single F1 score number)
+    score = score_model()
+    return score
 
 #######################Summary Statistics Endpoint
 @app.route("/summarystats", methods=['GET','OPTIONS'])
 def stats():        
     #check means, medians, and modes for each column
-    return #return a list of all calculated summary statistics
+    summary = diagnostics.dataframe_summary()
+    return summary
 
 #######################Diagnostics Endpoint
 @app.route("/diagnostics", methods=['GET','OPTIONS'])
 def stats():        
     #check timing and percent NA values
-    return #add return value for all diagnostics
+    missing_data = diagnostics.dataframe_missing_data()
+    ingestion_timing, training_timing = diagnostics.execution_time()
+    outdated_pkg = diagnostics.outdated_packages_list()
+    return missing_data, ingestion_timing, training_timing, outdated_pkg
 
 if __name__ == "__main__":    
     app.run(host='0.0.0.0', port=8000, debug=True, threaded=True)
