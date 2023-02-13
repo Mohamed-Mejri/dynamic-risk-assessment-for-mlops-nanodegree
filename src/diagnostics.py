@@ -25,7 +25,7 @@ prod_path = os.path.join(config['prod_deployment_path'])
 ##################Function to get model predictions
 def model_predictions(data=None, prod_path=prod_path):
     #read the deployed model and a test dataset, calculate predictions
-    if data == None:
+    if type(data) == type(None):
         data = pd.read_csv(os.path.join(test_data_path, 'testdata.csv'))
     model = pickle.load(open(os.path.join(prod_path, 'trainedmodel.pkl'), 'rb'))
     X = data[['lastmonth_activity','lastyear_activity','number_of_employees']]
