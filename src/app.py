@@ -30,25 +30,26 @@ def predict():
 
 #######################Scoring Endpoint
 @app.route("/scoring", methods=['GET','OPTIONS'])
-def stats():        
+def scoring():        
     score = score_model()
-    return score
+    return str(score)
 
 #######################Summary Statistics Endpoint
 @app.route("/summarystats", methods=['GET','OPTIONS'])
 def stats():        
     #check means, medians, and modes for each column
     summary = diagnostics.dataframe_summary()
-    return summary
+    return str(summary)
 
 #######################Diagnostics Endpoint
 @app.route("/diagnostics", methods=['GET','OPTIONS'])
-def stats():        
+def diags():        
     #check timing and percent NA values
     missing_data = diagnostics.dataframe_missing_data()
     ingestion_timing, training_timing = diagnostics.execution_time()
     outdated_pkg = diagnostics.outdated_packages_list()
-    return missing_data, ingestion_timing, training_timing, outdated_pkg
+    msg = "missing_data = %s \n ingestion_timing = %s \n training_timing = %s \n outdated_pkg = %s" %(missing_data, ingestion_timing, training_timing, outdated_pkg)
+    return msg
 
 if __name__ == "__main__":    
     app.run(host='0.0.0.0', port=8000, debug=True, threaded=True)
